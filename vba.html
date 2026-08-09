@@ -68,6 +68,12 @@ body{
     text-decoration:none;
     color:white;
     font-weight:bold;
+    border:none;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#2563eb;
 }
 
 .notice{
@@ -83,6 +89,14 @@ body{
     margin-top:60px;
     padding:20px;
     color:#94a3b8;
+}
+
+.home-btn{
+    background:#10b981;
+}
+
+.home-btn:hover{
+    background:#059669;
 }
 
 </style>
@@ -113,9 +127,10 @@ V2.6 Enterprise Automation Workstation
 已同步使用者請直接使用桌面捷徑啟動。
 </p>
 
-<a class="btn" href="#">
+<button class="btn"
+onclick="alert('已同步使用者請直接由桌面捷徑【🚀 VBA工作站】啟動');">
 已同步使用者
-</a>
+</button>
 
 </div>
 
@@ -128,9 +143,10 @@ V2.6 Enterprise Automation Workstation
 執行建立桌面捷徑。
 </p>
 
-<a class="btn" href="#">
+<button class="btn"
+onclick="alert('第一次使用步驟：\n\n1. 開啟 SharePoint 文件庫\n2. 點選【同步】\n3. 等待 OneDrive 完成同步\n4. 執行【建立桌面捷徑】\n5. 之後由桌面啟動 VBA工作站');">
 同步教學
-</a>
+</button>
 
 </div>
 
@@ -142,9 +158,10 @@ V2.6 Enterprise Automation Workstation
 工作站完整操作說明。
 </p>
 
-<a class="btn" href="#">
+<button class="btn"
+onclick="alert('請將此按鈕改連至 SharePoint 使用手冊網址');">
 開啟手冊
-</a>
+</button>
 
 </div>
 
@@ -156,9 +173,10 @@ V2.6 Enterprise Automation Workstation
 Core、Packages、Templates。
 </p>
 
-<a class="btn" href="#">
+<button class="btn"
+onclick="alert('請將此按鈕改連至 SharePoint 模組中心網址');">
 查看模組
-</a>
+</button>
 
 </div>
 
@@ -185,6 +203,11 @@ Core、Packages、Templates。
 <br>
 請直接執行桌面捷徑
 </p>
+
+<button class="btn home-btn"
+onclick="window.location.href='index.html';">
+🏠 返回首頁
+</button>
 
 </div>
 
