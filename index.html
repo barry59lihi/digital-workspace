@@ -1,51 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Barry Digital Workspace</title>
-
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Automation Platform V1</title>
 <style>
-body{
-    font-family: Arial;
-    background:#f5f7fa;
-    text-align:center;
-    padding-top:60px;
-}
-
-.card{
-    background:white;
-    width:300px;
-    margin:auto;
-    padding:30px;
-    border-radius:15px;
-    box-shadow:0 3px 10px rgba(0,0,0,.15);
-}
-
-button{
-    background:#4f46e5;
-    color:white;
-    border:none;
-    padding:12px 24px;
-    border-radius:8px;
-    cursor:pointer;
-}
-</style>
-
-</head>
-
-<body>
-
-<div class="card">
-
-<h1>🚀 數位工作平台</h1>
-
-<p>GitHub Pages 測試站</p>
-
-<button onclick="alert('測試成功')">
-VBA工作站
-</button>
-
-</div>
-
-</body>
-</html>
+:root{--bg:#06101e;--card:#0d1b31;--card2:#102540;--line:#294563;--text:#f5f8ff;--muted:#9db0c7;--cyan:#54ddff;--green:#63e6b1;--purple:#a98cff;--red:#ff6e83;--yellow:#ffd166}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 18% 0,#183562 0,transparent 28%),radial-gradient(circle at 88% 8%,#412760 0,transparent 25%),var(--bg);color:var(--text);font-family:"Microsoft JhengHei",system-ui,sans-serif;min-height:100vh}.wrap{max-width:1180px;margin:auto;padding:26px}.nav{display:flex;justify-content:space-between;align-items:center;gap:18px}.brand{font-weight:900}.brand small{color:var(--cyan);letter-spacing:.13em}.links{display:flex;gap:9px;flex-wrap:wrap}.navbtn,.ghost,.primary{cursor:pointer;border-radius:12px;padding:10px 14px;font:inherit}.navbtn,.ghost{color:#deebfb;background:#0b1a2ddd;border:1px solid var(--line)}.primary{border:0;color:#05101c;background:linear-gradient(135deg,var(--cyan),var(--green));font-weight:900}.hero{text-align:center;padding:62px 18px 36px}.eyebrow{color:var(--cyan);font-size:12px;letter-spacing:.2em}.hero h1{font-size:44px;line-height:1.1;margin:11px 0}.hero p{max-width:720px;margin:0 auto 18px;color:#b8c7da;line-height:1.8}.status{display:inline-flex;gap:8px;align-items:center;padding:8px 13px;border:1px solid #285c57;border-radius:999px;background:#0a2b28;color:#baf7dc}.dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 16px var(--green)}.roles{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}.role{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:24px;padding:28px;background:linear-gradient(160deg,#10243ddd,#0a1729dd);min-height:260px}.role.admin{background:linear-gradient(160deg,#1b1c40dd,#0a1729dd)}.role .icon{font-size:36px}.role h2{margin:13px 0 5px;font-size:25px}.role p{color:var(--muted);line-height:1.7}.features{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:18px 0}.feature{padding:9px 11px;border:1px solid #2b4566;border-radius:10px;background:#0a182a}.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.quickcard{cursor:pointer;border:1px solid var(--line);background:#0c1a2e;border-radius:17px;padding:18px;transition:.18s}.quickcard:hover{transform:translateY(-3px);border-color:#5d83ae}.quickcard b{display:block;margin:8px 0}.quickcard span{color:var(--muted);font-size:14px}.section{margin-top:28px}.section h2{margin-bottom:6px}.section>p{color:var(--muted);margin-top:0}.pipeline{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border:1px solid var(--line);background:#081527;border-radius:18px;padding:18px}.node{padding:9px 11px;border:1px solid #34587f;background:#102641;border-radius:10px}.arrow{color:var(--cyan)}.privacy{border-left:4px solid var(--purple);background:#131730;border-radius:14px;padding:16px 18px;color:#cad6e7}.footer{text-align:center;color:#7188a4;padding:35px 0 12px;font-size:13px}.modal{display:none;position:fixed;inset:0;background:#020710df;z-index:10;align-items:center;justify-content:center;padding:22px}.modal.on{display:flex}.modalbox{width:min(760px,100%);max-height:86vh;overflow:auto;background:#0c192d;border:1px solid #41678e;border-radius:22px;padding:25px}.modalbox h2{margin-top:0}.modalbox p,.modalbox li{color:#c0cee0;line-height:1.75}.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}.health{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.metric{padding:15px;border-radius:14px;background:#0a192c;border:1px solid var(--line)}.green{color:var(--green)}.yellow{color:var(--yellow)}.red{color:var(--red)}a.btnlink{display:inline-block;text-decoration:none;margin-top:6px}@media(max-width:800px){.roles,.quick{grid-template-columns:1fr}.health{grid-template-columns:1fr}.hero h1{font-size:34px}.links{display:none}.wrap{padding:18px}}
+</style></head><body><div class="wrap">
+<nav class="nav"><div class="brand"><small>DIGITAL WORKSPACE</small><div>◇ Automation Platform</div></div><div class="links"><button class="navbtn" onclick="scrollToId('home')">首頁</button><button class="navbtn" onclick="scrollToId('architecture')">平台架構</button><button class="navbtn" onclick="showTool()">🧰 Tool Library</button><button class="navbtn" onclick="showLearn()">🎓 互動教學</button></div></nav>
+<header class="hero" id="home"><div class="eyebrow">AUTOMATION LIFECYCLE PLATFORM · V1 PROTOTYPE</div><h1>數位自動化工作平台</h1><p>將自動化的使用、發布、執行、監控、維護與交接集中成一個清楚入口。一般同仁只需要使用工具，管理者則進入完整控制中心。</p><div class="status"><span class="dot"></span> Platform Ready</div></header>
+<section class="roles">
+<div class="role"><div class="icon">👤</div><h2>使用自動化</h2><p>給一般同仁的簡單入口。取得正式版本、進入公司 Automation Center、查看使用說明與互動教學。</p><div class="features"><div class="feature">⬇ 正式版本</div><div class="feature">🎓 使用教學</div><div class="feature">📖 SOP / 說明</div><div class="feature">📊 執行狀態</div></div><button class="primary" onclick="openUser()">進入使用中心 →</button></div>
+<div class="role admin"><div class="icon">🔐</div><h2>管理自動化</h2><p>給維護與管理角色。從首頁掌握 Monitor、排程、Log、Process Flag、版本、知識與交接。</p><div class="features"><div class="feature">📊 Monitor</div><div class="feature">🕒 Scheduler</div><div class="feature">📜 Log / Flag</div><div class="feature">📚 Handover</div></div><button class="primary" onclick="openAdmin()">進入管理中心 →</button></div>
+</section>
+<section class="quick"><div class="quickcard" onclick="showTool()"><div>🧰</div><b>Tool Library</b><span>技術積木、名詞說明與新自動化發想。</span></div><div class="quickcard" onclick="showLearn()"><div>🎓</div><b>互動教學</b><span>以步驟導引了解平台，不需要先讀長篇手冊。</span></div><div class="quickcard" onclick="showTerms()"><div>ⓘ</div><b>技術名詞</b><span>Excel COM、Process Flag、Log 等一鍵快速說明。</span></div></section>
+<section class="section" id="architecture"><h2>平台生命週期</h2><p>V1 首頁只負責導覽，各功能仍各自負責自己的工作。</p><div class="pipeline"><span class="node">GitHub / 開發</span><span class="arrow">→</span><span class="node">SharePoint / 正式發布</span><span class="arrow">→</span><span class="node">Local Runtime</span><span class="arrow">→</span><span class="node">Task Scheduler</span><span class="arrow">→</span><span class="node">VBA / Excel</span><span class="arrow">→</span><span class="node">Flag + Log</span><span class="arrow">→</span><span class="node">Monitor</span><span class="arrow">→</span><span class="node">Handover</span></div></section>
+<section class="section"><div class="privacy"><b>🛡 Privacy by Design</b><br>GitHub 展示層以畫面、通用程式與非敏感內容為主；正式業務資料、個資、實際 Log 與權限內容不放在公開展示頁。監控首頁優先使用 AUTO-ID、狀態、時間與錯誤碼呈現。</div></section>
+<div class="footer">Automation Platform · Homepage V1 Prototype</div></div>
+<div class="modal" id="modal"><div class="modalbox"><div id="modalContent"></div><div class="modal-actions"><button class="ghost" onclick="closeModal()">關閉</button></div></div></div>
+<script>
+const share='https://fetonline.sharepoint.com/sites/AutomationCenter';
+function modal(html){modalContent.innerHTML=html;document.getElementById('modal').classList.add('on')}function closeModal(){document.getElementById('modal').classList.remove('on')}function scrollToId(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+function openUser(){modal(`<h2>👤 Automation Center｜使用中心</h2><p>一般使用者只保留工作需要的入口，不顯示 GitHub、原始碼、Raw Log 或管理設定。</p><ul><li>⬇ 取得正式版本</li><li>🎓 互動教學</li><li>📖 使用說明 / SOP</li><li>📊 執行狀態</li><li>❓ 問題處理</li></ul><a class="primary btnlink" href="${share}" target="_blank" rel="noopener noreferrer">🏢 進入 SharePoint Automation Center</a>`) }
+function openAdmin(){modal(`<h2>🔐 Automation Control Center</h2><div class="health"><div class="metric"><b class="green">🟢 Normal</b><br><span>首頁即時總覽區</span></div><div class="metric"><b class="yellow">🟡 Warning</b><br><span>需要注意的流程</span></div><div class="metric"><b class="red">🔴 Error</b><br><span>需要處理的流程</span></div></div><h3>維運</h3><p>📊 Monitor Center　🕒 Scheduler　📜 Log Center　🚩 Process Flag　🚨 Error Center</p><h3>開發</h3><p>🧭 專案探索　🔧 程式安全替代　🧩 Module Library　🧰 Tool Library</p><h3>知識與發布</h3><p>📦 Automation Library　📚 Handover　🎓 Interactive Learning　🔀 GitHub / Version　🏢 SharePoint / Release</p><p class="privacy"><b>V1 原則：</b>管理資訊與一般使用者介面分離；監控以 AUTO-ID 與系統狀態為主，避免在首頁顯示不必要個資。</p>`) }
+function showTool(){modal(`<h2>🧰 Tool Library</h2><p>它不是首頁，而是「技術與發想中心」。當你有新工作時，可從需求開始組合技術積木。</p><div class="pipeline"><span class="node">Task Scheduler</span><span class="arrow">→</span><span class="node">Excel COM</span><span class="arrow">→</span><span class="node">VBA</span><span class="arrow">→</span><span class="node">Process Flag</span><span class="arrow">→</span><span class="node">Log</span><span class="arrow">→</span><span class="node">Monitor</span></div><p>後續再接 GitHub、SharePoint、Automation Library 與 Handover。</p>`) }
+function showLearn(){modal(`<h2>🎓 互動教學</h2><p><b>Step 1：</b>先選擇「使用自動化」或「管理自動化」。</p><p><b>Step 2：</b>一般同仁從使用中心取得正式工具與說明。</p><p><b>Step 3：</b>管理者從 Control Center 查看監控、排程、Log、版本與交接。</p><p><b>Step 4：</b>遇到不熟悉的技術名詞，可直接使用 ⓘ 快速說明。</p>`) }
+function showTerms(){modal(`<h2>ⓘ 技術名詞快速說明</h2><h3>📗 Excel COM</h3><p>白話概念：讓程式透過 Windows 的自動化介面操作 Excel，例如啟動 Excel 並開啟指定工作簿。</p><h3>🚩 Process Flag</h3><p>白話概念：替流程留下目前執行位置或狀態記號，讓監控與問題追蹤更容易理解。</p><h3>📜 Log</h3><p>白話概念：記錄自動化何時執行、結果與必要的錯誤資訊。平台設計上應避免寫入不必要個資。</p>`) }
+</script></body></html>
