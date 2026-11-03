@@ -6,7 +6,7 @@
 <title>數位平台監控系統 - 初始設定</title>
 <HTA:APPLICATION ID="App" APPLICATIONNAME="數位平台監控系統 - 初始設定" BORDER="thin" CAPTION="yes" MAXIMIZEBUTTON="yes" MINIMIZEBUTTON="yes" SCROLL="yes" SINGLEINSTANCE="yes" SYSMENU="yes" />
 <style>
-*{box-sizing:border-box}body{margin:0;background:#0b1729;color:#f8fafc;font-family:"Microsoft JhengHei","Segoe UI",sans-serif;font-size:16px}.wrap{width:92%;max-width:920px;margin:26px auto}.head{text-align:center;margin-bottom:22px}.gear{font-size:43px}.head h1{margin:7px 0;color:#fff;font-size:27px}.head p{margin:0;color:#8fa8c4}.step{background:#10223a;border:1px solid #304b69;border-radius:8px;padding:15px 17px;margin:10px 0}.step b{font-size:15px}.num{display:inline-block;color:#61c9f1;background:#153451;padding:3px 7px;margin-right:8px}.pending{color:#93a9c0}.ok{color:#34d399}.bad{color:#fb7185}.info{margin-top:15px;padding:13px 15px;background:#081426;border:1px solid #263e59;color:#a8bdd1;border-radius:7px;line-height:1.65}.buttons{text-align:center;margin-top:22px}.btn{border:0;border-radius:4px;padding:12px 24px;margin:5px;background:#079ad7;color:#fff;font-weight:bold;cursor:pointer}.btn2{background:#435e7c}.btn3{background:#334b67}.path{word-break:break-all;color:#79d8ff;font-size:13px;margin-top:5px}.footer{text-align:center;color:#617c99;font-size:12px;margin-top:22px}
+*{box-sizing:border-box}body{margin:0;background:#0b1729;color:#f8fafc;font-family:"Microsoft JhengHei","Segoe UI",sans-serif;font-size:16px}.wrap{width:92%;max-width:920px;margin:26px auto}.head{text-align:center;margin-bottom:22px}.gear{font-size:43px}.head h1{margin:7px 0;font-size:27px}.head p{margin:0;color:#8fa8c4}.step{background:#10223a;border:1px solid #304b69;border-radius:8px;padding:15px 17px;margin:10px 0}.num{display:inline-block;color:#61c9f1;background:#153451;padding:3px 7px;margin-right:8px}.pending{color:#93a9c0}.ok{color:#34d399}.bad{color:#fb7185}.info{margin-top:15px;padding:13px 15px;background:#081426;border:1px solid #263e59;color:#a8bdd1;border-radius:7px;line-height:1.65}.buttons{text-align:center;margin-top:22px}.btn{border:0;border-radius:4px;padding:12px 21px;margin:5px;background:#079ad7;color:#fff;font-weight:bold;cursor:pointer}.btn2{background:#435e7c}.btn3{background:#334b67}.path{word-break:break-all;color:#79d8ff;font-size:13px;margin-top:5px}.footer{text-align:center;color:#617c99;font-size:12px;margin-top:22px}
 </style>
 <script language="javascript">
 var fso=new ActiveXObject("Scripting.FileSystemObject");
@@ -15,69 +15,47 @@ var rootPath="";
 var sharePointUrl="https://fetonline.sharepoint.com/sites/AutomationCenter/Shared%20Documents/Forms/AllItems.aspx";
 function setState(id,text,cls){var e=document.getElementById(id);e.innerText=text;e.className=cls;}
 function addSlash(p){return /\\$/.test(p)?p:p+"\\";}
-function isPlatformRoot(p){try{return fso.FolderExists(p) && fso.FolderExists(addSlash(p)+"Core") && fso.FolderExists(addSlash(p)+"Runtime") && fso.FolderExists(addSlash(p)+"Templates");}catch(e){return false;}}
-function findDirectPlatform(parent){try{var folder=fso.GetFolder(parent),subs=new Enumerator(folder.SubFolders);for(;!subs.atEnd();subs.moveNext()){var sf=subs.item();if(isPlatformRoot(sf.Path))return sf.Path;}}catch(e){}return "";}
-function findPlatform(){
- var user=sh.ExpandEnvironmentStrings("%USERPROFILE%");
- var names=["數位工作平台 - 文件","數位工作平台 - 文件 ","數位工作平台-文件"];
- var oneDriveCandidates=[];
- var commercial=sh.ExpandEnvironmentStrings("%OneDriveCommercial%");
- if(commercial && commercial.indexOf("%")<0)oneDriveCandidates.push(commercial);
- try{var uf=fso.GetFolder(user),subs=new Enumerator(uf.SubFolders);for(;!subs.atEnd();subs.moveNext()){var sf=subs.item();if(sf.Name.toLowerCase().indexOf("onedrive - ")==0)oneDriveCandidates.push(sf.Path);}}catch(e){}
- for(var i=0;i<oneDriveCandidates.length;i++){
-   var od=oneDriveCandidates[i];
-   for(var j=0;j<names.length;j++){var p=addSlash(od)+names[j];if(isPlatformRoot(p))return p;}
-   var direct=findDirectPlatform(od);if(direct)return direct;
-   try{var odFolder=fso.GetFolder(od),lv1=new Enumerator(odFolder.SubFolders);for(;!lv1.atEnd();lv1.moveNext()){var first=lv1.item();var nested=findDirectPlatform(first.Path);if(nested)return nested;}}catch(e2){}
+function isPlatformRoot(p){try{return fso.FolderExists(p)&&fso.FolderExists(addSlash(p)+"Core")&&fso.FolderExists(addSlash(p)+"Runtime")&&fso.FolderExists(addSlash(p)+"Templates");}catch(e){return false;}}
+function platformScore(p){var n=0,names=["Core","Runtime","Templates","Assets","Docs","Logs","Packages","平台入口"];for(var i=0;i<names.length;i++){try{if(fso.FolderExists(addSlash(p)+names[i]))n++;}catch(e){}}return n;}
+function scanFolder(base,maxDepth){
+ if(!base||!fso.FolderExists(base))return "";
+ var queue=[{p:base,d:0}],best="",bestScore=0,seen={};
+ while(queue.length){var item=queue.shift(),key=item.p.toLowerCase();if(seen[key])continue;seen[key]=true;
+  var sc=platformScore(item.p);if(sc>bestScore){bestScore=sc;best=item.p;}if(isPlatformRoot(item.p))return item.p;
+  if(item.d>=maxDepth)continue;
+  try{var folder=fso.GetFolder(item.p),subs=new Enumerator(folder.SubFolders);for(;!subs.atEnd();subs.moveNext()){var sf=subs.item(),nm=String(sf.Name).toLowerCase();if(nm==="appdata"||nm==="windows"||nm==="$recycle.bin")continue;queue.push({p:sf.Path,d:item.d+1});}}catch(e){}
  }
- return "";
+ return bestScore>=5?best:"";
 }
-function checkLocalFiles(p){
- var entry=addSlash(p)+"平台入口";
- var hta=addSlash(entry)+"數位平台監控系統.hta";
- var ico=addSlash(entry)+"數位平台監控系統.ico";
- return {entry:entry,hta:hta,ico:ico,ok:fso.FileExists(hta)&&fso.FileExists(ico)};
+function addCandidate(arr,p){if(!p||p.indexOf("%")>=0)return;try{if(!fso.FolderExists(p))return;}catch(e){return;}for(var i=0;i<arr.length;i++)if(arr[i].toLowerCase()==p.toLowerCase())return;arr.push(p);}
+function findPlatform(){
+ var candidates=[],user=sh.ExpandEnvironmentStrings("%USERPROFILE%"),homeDrive=sh.ExpandEnvironmentStrings("%HOMEDRIVE%"),commercial=sh.ExpandEnvironmentStrings("%OneDriveCommercial%"),oneDrive=sh.ExpandEnvironmentStrings("%OneDrive%");
+ addCandidate(candidates,commercial);addCandidate(candidates,oneDrive);
+ try{var uf=fso.GetFolder(user),subs=new Enumerator(uf.SubFolders);for(;!subs.atEnd();subs.moveNext()){var sf=subs.item(),n=String(sf.Name).toLowerCase();if(n.indexOf("onedrive")>=0||n.indexOf("fareastone")>=0||n.indexOf("數位工作平台")>=0)addCandidate(candidates,sf.Path);}}catch(e){}
+ try{var d=fso.Drives,ds=new Enumerator(d);for(;!ds.atEnd();ds.moveNext()){var drv=ds.item();if(drv.IsReady&&drv.DriveType==2){var r=drv.RootFolder,rs=new Enumerator(r.SubFolders);for(;!rs.atEnd();rs.moveNext()){var sf2=rs.item(),n2=String(sf2.Name).toLowerCase();if(n2.indexOf("onedrive")>=0||n2.indexOf("fareastone")>=0||n2.indexOf("數位工作平台")>=0)addCandidate(candidates,sf2.Path);}}}}catch(e2){}
+ for(var i=0;i<candidates.length;i++){var found=scanFolder(candidates[i],3);if(found)return found;}
+ return scanFolder(user,2);
 }
-function makeShortcut(info){
- try{
-  var desktop=sh.SpecialFolders("Desktop");
-  var shortcut=desktop+"\\數位平台監控系統.lnk";
-  var link=sh.CreateShortcut(shortcut);
-  link.TargetPath=sh.ExpandEnvironmentStrings("%SystemRoot%\\System32\\mshta.exe");
-  link.Arguments='"'+info.hta+'"';
-  link.WorkingDirectory=info.entry;
-  link.IconLocation=info.ico+",0";
-  link.Description="數位平台監控系統";
-  link.Save();
-  return fso.FileExists(shortcut);
- }catch(e){return false;}
-}
-function runCheck(createLink){
- setState("s1","檢查中…","pending");setState("s2","檢查中…","pending");setState("s3","等待中","pending");setState("s4","等待中","pending");setState("s5","等待中","pending");document.getElementById("det").innerHTML="";
- var commercial=sh.ExpandEnvironmentStrings("%OneDriveCommercial%");
- if(commercial && commercial.indexOf("%")<0 && fso.FolderExists(commercial)){setState("s1","完成","ok");}else{setState("s1","找不到公司 OneDrive","bad");return;}
- rootPath=findPlatform();
- if(!rootPath){setState("s2","尚未找到平台同步資料夾","bad");document.getElementById("det").innerHTML="已偵測到公司 OneDrive，但找不到包含 Core、Runtime、Templates 的平台根目錄。請先至 SharePoint 完成同步，再按「重新檢查」。";return;}
- setState("s2","完成","ok");document.getElementById("det").innerHTML='平台位置：<div class="path">'+rootPath+'</div>';
- var info=checkLocalFiles(rootPath);
- if(!info.ok){setState("s3","平台必要檔案尚未在本機可用","bad");document.getElementById("det").innerHTML+='請在檔案總管對平台資料夾使用「一律保留在此裝置上」，等必要檔案下載完成後重新檢查。';return;}
- setState("s3","完成","ok");setState("s4","平台主程式與圖示完成","ok");
- if(createLink){if(makeShortcut(info)){setState("s5","完成","ok");document.getElementById("det").innerHTML+='<br>桌面已建立「數位平台監控系統」捷徑。';}else{setState("s5","建立失敗","bad");}}else{setState("s5","等待建立","pending");}
-}
+function getEntryInfo(p){var entries=[addSlash(p)+"平台入口",p];for(var i=0;i<entries.length;i++){var entry=entries[i];var hta=addSlash(entry)+"數位平台監控系統.hta",html=addSlash(entry)+"數位平台監控系統.html",ico=addSlash(entry)+"數位平台監控系統.ico";if(fso.FileExists(hta)&&fso.FileExists(ico))return{entry:entry,app:hta,ico:ico,type:"hta"};if(fso.FileExists(html)&&fso.FileExists(ico))return{entry:entry,app:html,ico:ico,type:"html"};}return null;}
+function makeShortcut(info){try{var desktop=sh.SpecialFolders("Desktop"),shortcut=desktop+"\\數位平台監控系統.lnk",link=sh.CreateShortcut(shortcut);if(info.type==="hta"){link.TargetPath=sh.ExpandEnvironmentStrings("%SystemRoot%\\System32\\mshta.exe");link.Arguments='"'+info.app+'"';}else{link.TargetPath=info.app;link.Arguments="";}link.WorkingDirectory=info.entry;link.IconLocation=info.ico+",0";link.Description="數位平台監控系統";link.Save();return fso.FileExists(shortcut);}catch(e){return false;}}
+function runCheck(createLink){setState("s1","檢查中…","pending");setState("s2","檢查中…","pending");setState("s3","等待中","pending");setState("s4","等待中","pending");setState("s5","等待中","pending");document.getElementById("det").innerHTML="";
+ var commercial=sh.ExpandEnvironmentStrings("%OneDriveCommercial%"),oneDrive=sh.ExpandEnvironmentStrings("%OneDrive%");if((commercial.indexOf("%")<0&&fso.FolderExists(commercial))||(oneDrive.indexOf("%")<0&&fso.FolderExists(oneDrive))){setState("s1","完成","ok");}else{setState("s1","未偵測到 OneDrive 環境","bad");return;}
+ rootPath=findPlatform();if(!rootPath){setState("s2","尚未找到平台同步資料夾","bad");document.getElementById("det").innerHTML="已偵測到 OneDrive，但尚未在本機使用者路徑與同步磁碟找到平台結構。請確認 SharePoint 同步已完成，再按「重新檢查」。";return;}
+ setState("s2","完成","ok");document.getElementById("det").innerHTML='已找到本機平台位置：<div class="path">'+rootPath+'</div>';
+ var info=getEntryInfo(rootPath);if(!info){setState("s3","平台資料夾已找到","ok");setState("s4","主程式或圖示尚未在本機可用","bad");document.getElementById("det").innerHTML+='<br>請對「數位工作平台」資料夾使用「一律保留在此裝置上」，待綠色勾勾出現後重新檢查。';return;}
+ setState("s3","完成","ok");setState("s4","完成","ok");if(createLink){if(makeShortcut(info)){setState("s5","完成","ok");document.getElementById("det").innerHTML+='<br>桌面捷徑已建立。';}else setState("s5","建立失敗","bad");}else setState("s5","等待建立","pending");}
 function openSync(){sh.Run('"'+sharePointUrl+'"',1,false);}
 function startSetup(){runCheck(true);}
-function startPlatform(){if(!rootPath)rootPath=findPlatform();if(!rootPath){alert("尚未找到平台同步資料夾。");return;}var i=checkLocalFiles(rootPath);if(!i.ok){alert("平台必要檔案尚未在本機可用。");return;}sh.Run('mshta.exe "'+i.hta+'"',3,false);}
+function startPlatform(){if(!rootPath)rootPath=findPlatform();if(!rootPath){alert("尚未找到平台同步資料夾。");return;}var i=getEntryInfo(rootPath);if(!i){alert("平台主程式尚未在本機可用。");return;}if(i.type==="hta")sh.Run('mshta.exe "'+i.app+'"',3,false);else sh.Run('"'+i.app+'"',3,false);}
 window.onload=function(){runCheck(false);};
 </script>
 </head>
-<body><div class="wrap">
-<div class="head"><div class="gear">⚙</div><h1>數位平台監控系統</h1><p>正在進行初始設定</p></div>
-<div class="step"><span class="num">1</span><b>檢查 OneDrive 與平台同步資料夾</b><div id="s1" class="pending">等待中</div></div>
-<div class="step"><span class="num">2</span><b>自動辨識「數位工作平台」實際同步位置</b><div id="s2" class="pending">等待中</div></div>
-<div class="step"><span class="num">3</span><b>檢查平台必要檔案是否已下載至本機</b><div id="s3" class="pending">等待中</div></div>
+<body><div class="wrap"><div class="head"><div class="gear">⚙</div><h1>數位平台監控系統</h1><p>正在進行初始設定</p></div>
+<div class="step"><span class="num">1</span><b>檢查 OneDrive</b><div id="s1" class="pending">等待中</div></div>
+<div class="step"><span class="num">2</span><b>搜尋同仁本機的數位工作平台路徑</b><div id="s2" class="pending">等待中</div></div>
+<div class="step"><span class="num">3</span><b>確認平台資料夾可在本機使用</b><div id="s3" class="pending">等待中</div></div>
 <div class="step"><span class="num">4</span><b>檢查平台主程式與圖示</b><div id="s4" class="pending">等待中</div></div>
 <div class="step"><span class="num">5</span><b>建立桌面捷徑</b><div id="s5" class="pending">等待中</div></div>
 <div class="buttons"><button class="btn" onclick="startSetup()">開始設定</button><button class="btn btn2" onclick="openSync()">設定 OneDrive 同步</button><button class="btn btn3" onclick="runCheck(false)">重新檢查</button><button class="btn btn3" onclick="startPlatform()">開始使用</button></div>
-<div id="det" class="info">新版會先找公司 OneDrive，再以 Core、Runtime、Templates 的平台結構辨識實際同步位置，不再只依賴固定資料夾名稱。</div>
-<div class="footer">多人同步辨識版｜SharePoint 文件庫：AutomationCenter / Shared Documents</div>
-</div></body></html>
+<div id="det" class="info">V8 會搜尋同仁本機 OneDrive、公司同步資料夾及本機同步磁碟，再以 Core、Runtime、Templates 等平台結構確認位置。</div>
+<div class="footer">V8 本機路徑搜尋版｜AutomationCenter / Shared Documents</div></div></body></html>
